@@ -5,14 +5,8 @@ const cors = require("cors");
 const app = express();
 const port = process.env.PORT || 3000;
 const db = require("./app/models");
-const Transactions = db.transactions;
-const DetailTransactions = db.detail_transactions;
-const cron = require("node-cron");
-const checkTransactionExpired = require("./app/cron/cronCheckExpired.js");
-const checkCart = require("./app/cron/cronCheckCart.js");
-
 var corsOptions = {
-  origin: "http://localhost:3000",
+  origin: "http://localhost:3001",
 };
 
 app.use(cors(corsOptions));
@@ -29,11 +23,6 @@ app.get("/", (request, response) => {
 });
 
 require("./app/routes/route")(app);
-
-cron.schedule("*/5 * * * *", () => {
-  checkCart();
-  checkTransactionExpired();
-});
 
 app.listen(port, () => {
   console.group("Server Listening on PORT: ", port);
